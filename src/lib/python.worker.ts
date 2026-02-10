@@ -393,9 +393,17 @@ class Vector2:
         ox, oy = self._coerce_xy(other)
         return Vector2(self.x + ox, self.y + oy)
 
+    def __radd__(self, other):
+        ox, oy = self._coerce_xy(other)
+        return Vector2(ox + self.x, oy + self.y)
+
     def __sub__(self, other):
         ox, oy = self._coerce_xy(other)
         return Vector2(self.x - ox, self.y - oy)
+
+    def __rsub__(self, other):
+        ox, oy = self._coerce_xy(other)
+        return Vector2(ox - self.x, oy - self.y)
 
     def __mul__(self, scalar):
         if isinstance(scalar, Vector2):
@@ -625,6 +633,7 @@ class _TextSurface:
         self.color = color
         self.size = int(size)
         self.name = str(name)
+        self._alpha = None
         # Approximate text metrics for layout-dependent game logic.
         self._width = max(1, int(round(len(self.text) * self.size * 0.6)))
         self._height = max(1, int(round(self.size)))
@@ -644,6 +653,19 @@ class _TextSurface:
             if hasattr(rect, key):
                 setattr(rect, key, value)
         return rect
+
+    def convert_alpha(self):
+        return self
+
+    def convert(self):
+        return self
+
+    def set_alpha(self, alpha):
+        self._alpha = None if alpha is None else max(0, min(255, int(alpha)))
+        return None
+
+    def get_alpha(self):
+        return getattr(self, "_alpha", None)
 
 class Surface:
     def __init__(self, size, flags=0, depth=0, masks=None):
@@ -1072,16 +1094,22 @@ class _TransformModule:
                 )
                 continue
             if op == "draw_ellipse":
-                cx = command["x"] + command["w"] / 2.0
-                cy = command["y"] + command["h"] / 2.0
-                rcx, rcy = _rotate_point(cx, cy, src_cx, src_cy, cos_signed, sin_signed, dst_cx, dst_cy)
+                ecx = command["x"] + command["w"] / 2.0
+                ecy = command["y"] + command["h"] / 2.0
+                erx = command["w"] / 2.0
+                ery = command["h"] / 2.0
+                num_segments = 32
+                rotated_points = []
+                for i in range(num_segments):
+                    t = 2.0 * math.pi * i / num_segments
+                    px = ecx + erx * math.cos(t)
+                    py = ecy + ery * math.sin(t)
+                    rpx, rpy = _rotate_point(px, py, src_cx, src_cy, cos_signed, sin_signed, dst_cx, dst_cy)
+                    rotated_points.append([rpx, rpy])
                 out._commands.append(
                     {
-                        "op": "draw_ellipse",
-                        "x": rcx - command["w"] / 2.0,
-                        "y": rcy - command["h"] / 2.0,
-                        "w": command["w"],
-                        "h": command["h"],
+                        "op": "draw_polygon",
+                        "points": rotated_points,
                         "color": command["color"],
                         "width": command["width"],
                     }
@@ -1753,7 +1781,7 @@ const flushDrawBuffer = (force = false) => {
     const bufferedForMs = now - bufferStartedTs
     // A clear commonly marks the start of a pygame frame. Give draw calls a brief
     // window to batch until flip()/present arrives to avoid split-frame flashing.
-    if (drawBuffer.length < 64 && bufferedForMs < 28) {
+    if (bufferedForMs < 28) {
       return
     }
   }

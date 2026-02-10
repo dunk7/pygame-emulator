@@ -196,6 +196,15 @@ button.primary {
   background: #000;
 }
 
+.stage:fullscreen {
+  padding: 0;
+}
+
+.stage:fullscreen canvas {
+  border-radius: 0;
+  border: none;
+}
+
 .stage-loading-overlay {
   position: absolute;
   inset: 8px;
@@ -296,14 +305,3 @@ button.primary {
   }
 }
 
-@media (min-width: 1201px) and (max-width: 1500px) {
-  .editor-panel .panel-toolbar .control {
-    display: none;
-  }
-}
-
-@media (max-width: 700px) {
-  .editor-panel .panel-toolbar .control {
-    display: none;
-  }
-}

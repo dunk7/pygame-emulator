@@ -213,15 +213,17 @@ function App() {
             <label className="control">
               <span>Sample</span>
               <select value={selectedSample} onChange={(event) => applySample(event.target.value as SampleProgramId)}>
-                <option value="pygame">Pygame demo</option>
+                <option value="pygame">Neon Survivor</option>
+                <option value="snake">Snake Game</option>
+                <option value="platformer">Platformer</option>
+                <option value="space_shooter">Space Shooter</option>
+                <option value="puzzle">Sliding Puzzle</option>
                 <option value="turtle">Turtle demo</option>
-                <option value="advanced">Advanced capabilities demo</option>
               </select>
             </label>
             <div className="toolbar-buttons">
               <button onClick={clearCode}>Clear Code</button>
               <button onClick={clearCanvas}>Clear Canvas</button>
-              <button onClick={clearConsole}>Clear Console</button>
               <div className="run-controls">
                 <button className="primary" onClick={isRunning ? stopCode : runCode}>
                   {isRunning ? 'Stop' : 'Play'}
@@ -266,16 +268,19 @@ function App() {
           <div className="console-shell">
             <div className="console-toolbar">
               <span>Console</span>
-              <button
-                className={clsx('copy-console-button', {
-                  copied: copyState === 'copied',
-                  failed: copyState === 'failed',
-                })}
-                disabled={consoleLines.length === 0}
-                onClick={() => void copyConsoleMessages()}
-              >
-                {copyState === 'copied' ? 'Copied!' : copyState === 'failed' ? 'Copy failed' : 'Copy Messages'}
-              </button>
+              <div style={{ display: 'flex', gap: '8px' }}>
+                <button onClick={clearConsole}>Clear Console</button>
+                <button
+                  className={clsx('copy-console-button', {
+                    copied: copyState === 'copied',
+                    failed: copyState === 'failed',
+                  })}
+                  disabled={consoleLines.length === 0}
+                  onClick={() => void copyConsoleMessages()}
+                >
+                  {copyState === 'copied' ? 'Copied!' : copyState === 'failed' ? 'Copy failed' : 'Copy Messages'}
+                </button>
+              </div>
             </div>
             <div className="console">
               {consoleLines.length === 0 ? (
