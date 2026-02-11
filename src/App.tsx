@@ -213,6 +213,7 @@ function App() {
             <label className="control">
               <span>Sample</span>
               <select value={selectedSample} onChange={(event) => applySample(event.target.value as SampleProgramId)}>
+                <option value="new_project">New Project</option>
                 <option value="pygame">Neon Survivor</option>
                 <option value="snake">Snake Game</option>
                 <option value="platformer">Platformer</option>

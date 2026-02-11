@@ -1,4 +1,52 @@
 export const SAMPLE_PROGRAMS = {
+  new_project: `import pygame
+import math
+import random
+
+# --- Settings ---
+WIDTH, HEIGHT = 900, 560
+FPS = 60
+
+# --- Colors ---
+BLACK = (0, 0, 0)
+WHITE = (255, 255, 255)
+RED = (255, 0, 0)
+GREEN = (0, 255, 0)
+BLUE = (0, 0, 255)
+
+# --- Init ---
+pygame.init()
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption("My Game")
+clock = pygame.time.Clock()
+font = pygame.font.SysFont("Arial", 24)
+
+# --- Game variables ---
+# Add your variables here
+
+
+# --- Game loop ---
+running = True
+while running:
+    dt = clock.tick(FPS) / 1000.0
+
+    # --- Events ---
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+        if event.type == pygame.KEYDOWN:
+            pass  # Handle key presses
+
+    # --- Update ---
+    keys = pygame.key.get_pressed()
+    # Add your update logic here
+
+    # --- Draw ---
+    screen.fill(BLACK)
+    # Add your drawing here
+
+    pygame.display.flip()
+`,
   pygame: `import pygame
 import math
 import random
