@@ -220,6 +220,7 @@ function App() {
                 <option value="space_shooter">Space Shooter</option>
                 <option value="puzzle">Sliding Puzzle</option>
                 <option value="turtle">Turtle demo</option>
+                <option value="dodge">Dodge</option>
               </select>
             </label>
             <div className="toolbar-buttons">

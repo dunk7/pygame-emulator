@@ -983,6 +983,79 @@ while running:
     
     pygame.display.flip()
 `,
+  dodge: `import pygame
+import random
+import math
+
+pygame.init()
+W, H = 900, 560
+screen = pygame.display.set_mode((W, H))
+clock = pygame.time.Clock()
+font = pygame.font.SysFont("Arial", 32)
+
+player = pygame.Rect(W // 2 - 20, H // 2 - 20, 40, 40)
+speed = 280
+enemies = []
+spawn_timer = 0
+alive = True
+
+running = True
+while running:
+    dt = clock.tick(60) / 1000
+
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+        if not alive and event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+            player.center = (W // 2, H // 2)
+            enemies.clear()
+            spawn_timer = 0
+            alive = True
+
+    if alive:
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_LEFT]:  player.x -= speed * dt
+        if keys[pygame.K_RIGHT]: player.x += speed * dt
+        if keys[pygame.K_UP]:    player.y -= speed * dt
+        if keys[pygame.K_DOWN]:  player.y += speed * dt
+        player.clamp_ip(screen.get_rect())
+
+        # Spawn enemies on the edges
+        spawn_timer += dt
+        if spawn_timer > 0.8:
+            spawn_timer = 0
+            side = random.choice(["top", "bottom", "left", "right"])
+            if side == "top":    ex, ey = random.randint(0, W), 0
+            elif side == "bottom": ex, ey = random.randint(0, W), H
+            elif side == "left":  ex, ey = 0, random.randint(0, H)
+            else:                 ex, ey = W, random.randint(0, H)
+            enemies.append({"rect": pygame.Rect(ex - 15, ey - 15, 30, 30), "x": float(ex), "y": float(ey)})
+
+        # Move enemies toward player
+        for e in enemies:
+            dx = player.centerx - e["x"]
+            dy = player.centery - e["y"]
+            dist = math.hypot(dx, dy)
+            if dist > 0:
+                e["x"] += dx / dist * 120 * dt
+                e["y"] += dy / dist * 120 * dt
+                e["rect"].center = (int(e["x"]), int(e["y"]))
+
+            if player.colliderect(e["rect"]):
+                alive = False
+
+    # Draw
+    screen.fill((20, 20, 30))
+    pygame.draw.rect(screen, (100, 200, 255), player)
+    for e in enemies:
+        pygame.draw.rect(screen, (255, 60, 60), e["rect"])
+
+    if not alive:
+        msg = font.render("Game Over! Press SPACE", True, (255, 255, 255))
+        screen.blit(msg, (W // 2 - msg.get_width() // 2, H // 2 - 20))
+
+    pygame.display.flip()
+`,
 }
 
 export type SampleProgramId = keyof typeof SAMPLE_PROGRAMS
