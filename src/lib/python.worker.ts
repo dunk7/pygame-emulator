@@ -1,4 +1,4 @@
-f/// <reference lib="webworker" />f
+/// <reference lib="webworker" />
 
 import type { DrawCommand, RuntimeEvent, WorkerInboundMessage, WorkerOutboundMessage } from './pyWorkerProtocol'
 
