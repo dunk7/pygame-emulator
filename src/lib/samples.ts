@@ -1018,7 +1018,8 @@ while running:
         if keys[pygame.K_RIGHT]: player.x += speed * dt
         if keys[pygame.K_UP]:    player.y -= speed * dt
         if keys[pygame.K_DOWN]:  player.y += speed * dt
-        player.clamp_ip(screen.get_rect())
+        player.x = max(0, min(player.x, W - player.width))
+        player.y = max(0, min(player.y, H - player.height))
 
         # Spawn enemies on the edges
         spawn_timer += dt
