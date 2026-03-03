@@ -1,50 +1,29 @@
 export const SAMPLE_PROGRAMS = {
   new_project: `import pygame
-import math
-import random
 
-# --- Settings ---
-WIDTH, HEIGHT = 900, 560
-FPS = 60
-
-# --- Colors ---
-BLACK = (0, 0, 0)
-WHITE = (255, 255, 255)
-RED = (255, 0, 0)
-GREEN = (0, 255, 0)
-BLUE = (0, 0, 255)
-
-# --- Init ---
 pygame.init()
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("My Game")
+screen = pygame.display.set_mode((900, 560))
 clock = pygame.time.Clock()
-font = pygame.font.SysFont("Arial", 24)
 
-# --- Game variables ---
-# Add your variables here
+x, y = 400, 250
+speed = 300
 
-
-# --- Game loop ---
 running = True
 while running:
-    dt = clock.tick(FPS) / 1000.0
+    dt = clock.tick(60) / 1000
 
-    # --- Events ---
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-        if event.type == pygame.KEYDOWN:
-            pass  # Handle key presses
 
-    # --- Update ---
     keys = pygame.key.get_pressed()
-    # Add your update logic here
+    if keys[pygame.K_LEFT]:  x -= speed * dt
+    if keys[pygame.K_RIGHT]: x += speed * dt
+    if keys[pygame.K_UP]:    y -= speed * dt
+    if keys[pygame.K_DOWN]:  y += speed * dt
 
-    # --- Draw ---
-    screen.fill(BLACK)
-    # Add your drawing here
-
+    screen.fill((30, 30, 40))
+    pygame.draw.rect(screen, (100, 200, 255), (x, y, 50, 50))
     pygame.display.flip()
 `,
   pygame: `import pygame
