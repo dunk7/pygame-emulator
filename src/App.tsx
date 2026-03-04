@@ -207,6 +207,10 @@ function App() {
 
   return (
     <div className="app-shell">
+      <header className="app-header">
+        <span className="app-title">pygame emulator</span>
+        <span className="built-by">built by max</span>
+      </header>
       <main className="workspace">
         <section className="panel editor-panel">
           <div className="panel-toolbar">
@@ -298,9 +302,6 @@ function App() {
           </div>
         </section>
       </main>
-      <footer style={{ textAlign: 'center', padding: '6px 0', fontSize: '0.75rem', color: '#4a5568', letterSpacing: '0.5px' }}>
-        built by max
-      </footer>
     </div>
   )
 }
