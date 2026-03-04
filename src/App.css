@@ -1,7 +1,7 @@
 .app-shell {
   height: 100dvh;
   display: grid;
-  grid-template-rows: minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr) auto;
   padding: 16px;
   box-sizing: border-box;
   overflow: hidden;

@@ -298,6 +298,9 @@ function App() {
           </div>
         </section>
       </main>
+      <footer style={{ textAlign: 'center', padding: '6px 0', fontSize: '0.75rem', color: '#4a5568', letterSpacing: '0.5px' }}>
+        built by max
+      </footer>
     </div>
   )
 }
