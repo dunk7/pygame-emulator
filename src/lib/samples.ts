@@ -983,6 +983,46 @@ while running:
     
     pygame.display.flip()
 `,
+  enemies_demo: `import pygame
+
+pygame.init()
+screen = pygame.display.set_mode((900, 560))
+clock = pygame.time.Clock()
+
+x, y = 400, 250
+speed = 300
+
+enemies = []
+enemies.append((200,200))
+print(enemies)
+
+
+running = True
+while running:
+    dt = clock.tick(60) / 1000
+
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_LEFT]:  x -= speed * dt
+    if keys[pygame.K_RIGHT]: x += speed * dt
+    if keys[pygame.K_UP]:    y -= speed * dt
+    if keys[pygame.K_DOWN]:  y += speed * dt
+
+    screen.fill((30, 300, 40))
+
+ 
+    for enemy in enemies:
+      pygame.draw.rect(screen, (255,0,0), (enemy[0],enemy[1], 20,20))
+
+     
+
+   
+    pygame.draw.rect(screen, (100, 200, 255), (x, y, 50, 50))
+    pygame.display.flip()
+`,
   dodge: `import pygame
 import random
 import math
