@@ -28,6 +28,7 @@ function App() {
   const runtimeRef = useRef<PythonCanvasRuntime | null>(null)
   const isRuntimeBusy = useRef(false)
   const copyStateResetTimer = useRef<number | null>(null)
+  const savedCode = useRef<Partial<Record<SampleProgramId, string>>>({})
 
   const appendConsole = (line: ConsoleLine) => {
     setConsoleLines((prev) => [...prev, line].slice(-400))
@@ -171,8 +172,9 @@ function App() {
   }
 
   const applySample = (sampleId: SampleProgramId) => {
+    savedCode.current[selectedSample] = code
     setSelectedSample(sampleId)
-    setCode(SAMPLE_PROGRAMS[sampleId])
+    setCode(savedCode.current[sampleId] ?? SAMPLE_PROGRAMS[sampleId])
   }
 
   const toggleFullscreen = async () => {
@@ -209,7 +211,6 @@ function App() {
     <div className="app-shell">
       <header className="app-header">
         <span className="app-title">pygame emulator</span>
-        <span className="built-by">built by max</span>
       </header>
       <main className="workspace">
         <section className="panel editor-panel">
